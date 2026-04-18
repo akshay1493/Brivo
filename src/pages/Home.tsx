@@ -10,35 +10,46 @@ import {
   BarChart, 
   Users, 
   ChevronRight,
-  Github
+  Globe,
+  Tag,
+  Activity,
+  LifeBuoy
 } from 'lucide-react';
 import { motion } from 'motion/react';
+import { cn } from '../lib/utils';
+
+import { Logo } from '../components/Logo';
+import { useAuthStore } from '../store/store';
 
 export default function Home() {
   const navigate = useNavigate();
+  const { token } = useAuthStore();
+
+  const handleCTA = () => {
+    if (token) {
+      navigate('/dashboard');
+    } else {
+      navigate('/login');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#020617] text-white selection:bg-primary/30">
       {/* Navigation */}
       <nav className="fixed top-0 z-50 w-full border-b border-white/5 bg-[#020617]/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white font-bold text-xl shadow-lg shadow-primary/20">
-              B
-            </div>
-            <span className="text-xl font-bold tracking-tighter">Brivo</span>
-          </div>
+          <Logo onClick={() => navigate('/')} className="cursor-pointer" light size={24} />
           <div className="hidden items-center gap-8 text-sm font-medium text-slate-400 md:flex">
             <a href="#features" className="hover:text-white transition-colors">Features</a>
             <a href="#pricing" className="hover:text-white transition-colors">Pricing</a>
             <a href="#about" className="hover:text-white transition-colors">About</a>
           </div>
           <div className="flex items-center gap-4">
-            <Button variant="ghost" className="text-slate-400 hover:text-white" onClick={() => navigate('/login')}>
-              Log in
+            <Button variant="ghost" className="text-slate-400 hover:text-white" onClick={handleCTA}>
+              {token ? 'Go to Dashboard' : 'Log in'}
             </Button>
-            <Button onClick={() => navigate('/login')} className="hidden sm:flex">
-              Start Free Trial
+            <Button onClick={handleCTA} className="hidden sm:flex">
+              {token ? 'Open Brivo' : 'Start Free Trial'}
             </Button>
           </div>
         </div>
@@ -69,27 +80,24 @@ export default function Home() {
               Built for performance, designed for clarity.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button size="lg" className="h-14 px-8 text-lg font-bold group" onClick={() => navigate('/login')}>
-                Get Started Now
+              <Button size="lg" className="h-14 px-8 text-lg font-bold group" onClick={handleCTA}>
+                {token ? 'Enter Workspace' : 'Get Started Now'}
                 <ChevronRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-              <Button variant="outline" size="lg" className="h-14 px-8 text-lg font-bold border-white/10 hover:bg-white/5">
-                <Github className="mr-2 h-5 w-5" />
-                View on GitHub
               </Button>
             </div>
           </motion.div>
 
           <motion.div 
-            className="mt-20 relative mx-auto max-w-6xl rounded-3xl border border-white/10 bg-white/5 p-2 shadow-2xl backdrop-blur-sm"
+            className="mt-20 relative mx-auto max-w-6xl rounded-3xl border border-white/10 bg-white/5 p-2 shadow-2xl backdrop-blur-sm group"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2, duration: 0.8 }}
           >
+            <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl pointer-events-none" />
             <img 
-              src="https://picsum.photos/seed/dashboard/1920/1080" 
-              alt="Dashboard Preview" 
-              className="rounded-2xl w-full"
+              src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2070&auto=format&fit=crop" 
+              alt="Team collaborating on multi-brand creative projects in Brivo" 
+              className="rounded-2xl w-full shadow-2xl transition-transform duration-700 group-hover:scale-[1.01] object-cover max-h-[600px]"
               referrerPolicy="no-referrer"
             />
           </motion.div>
@@ -139,6 +147,147 @@ export default function Home() {
         </div>
       </section>
 
+      {/* About Section */}
+      <section id="about" className="py-24 relative overflow-hidden">
+        <div className="absolute top-1/2 right-0 w-96 h-96 bg-primary/10 blur-[120px] rounded-full" />
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-3xl font-black mb-6 sm:text-5xl leading-tight">
+                Your Comprehensive <br />
+                <span className="text-primary">Workspace Solution</span>
+              </h2>
+              <div className="space-y-6 text-slate-400 text-lg leading-relaxed">
+                <p>
+                  Brivo represents a groundbreaking and transformative advancement in the realm of multi-brand workspace management. 
+                  It is not merely software; it is a meticulously crafted, holistic suite designed to revolutionize and significantly 
+                  enhance how modern agencies and creative teams operate in today's fast-paced environment.
+                </p>
+                <p>
+                  Brivo streamlines and simplifies the often-complex processes of productivity tracking, brand identity management, 
+                  and automated, yet insightful, performance reporting. All these powerful capabilities are elegantly and seamlessly 
+                  integrated into a unified, visually-driven, and user-friendly interface.
+                </p>
+                <p className="font-medium text-slate-300">
+                  Join hundreds of agencies empowering their teams to focus on what truly matters most: 
+                  crafting exceptional, innovative, and impactful work.
+                </p>
+              </div>
+            </motion.div>
+            <motion.div 
+              className="grid grid-cols-2 gap-6"
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+            >
+              <div className="space-y-6">
+                <div className="aspect-square rounded-3xl bg-white/5 border border-white/10 p-8 flex flex-col justify-between relative overflow-hidden group">
+                  <Globe className="h-8 w-8 text-primary/40" />
+                  <div className="relative z-10">
+                    <div className="text-4xl font-black text-white mb-2">99%</div>
+                    <div className="text-xs font-bold uppercase tracking-widest text-slate-500">Uptime Reliability</div>
+                  </div>
+                  <div className="absolute -right-4 -top-4 h-24 w-24 bg-primary/5 rounded-full blur-2xl border border-white/5 group-hover:scale-150 transition-transform duration-700" />
+                </div>
+                <div className="aspect-[4/5] rounded-3xl bg-primary p-8 flex flex-col justify-between text-white relative overflow-hidden group">
+                   <Tag className="h-10 w-10 text-white/40" />
+                   <div className="relative z-10">
+                    <div className="text-4xl font-black mb-2">250+</div>
+                    <div className="text-xs font-bold uppercase tracking-widest opacity-80">Brands Managed</div>
+                   </div>
+                   <img 
+                    src="https://picsum.photos/seed/branding/400/500" 
+                    alt="Brands decorative" 
+                    className="absolute inset-0 w-full h-full object-cover opacity-10 mix-blend-overlay group-hover:scale-110 transition-transform duration-700" 
+                    referrerPolicy="no-referrer"
+                  />
+                </div>
+              </div>
+              <div className="space-y-6 pt-12">
+                <div className="aspect-[4/5] rounded-3xl bg-indigo-500 p-8 flex flex-col justify-between text-white relative overflow-hidden group">
+                  <Activity className="h-10 w-10 text-white/40" />
+                  <div className="relative z-10">
+                    <div className="text-4xl font-black mb-2">12M</div>
+                    <div className="text-xs font-bold uppercase tracking-widest opacity-80">Tasks Completed</div>
+                  </div>
+                   <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-50" />
+                </div>
+                <div className="aspect-square rounded-3xl bg-white/5 border border-white/10 p-8 flex flex-col justify-between relative overflow-hidden group">
+                   <LifeBuoy className="h-8 w-8 text-indigo-400/40" />
+                   <div className="relative z-10">
+                    <div className="text-4xl font-black text-white mb-2">24/7</div>
+                    <div className="text-xs font-bold uppercase tracking-widest text-slate-500">Expert Support</div>
+                   </div>
+                   <img 
+                    src="https://picsum.photos/seed/support/400/400" 
+                    alt="Support decorative" 
+                    className="absolute inset-0 w-full h-full object-cover opacity-5 grayscale group-hover:opacity-10 transition-opacity duration-700" 
+                    referrerPolicy="no-referrer"
+                  />
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing Section */}
+      <section id="pricing" className="py-24 bg-white/[0.02]">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+          <div className="mb-16">
+            <h2 className="text-3xl font-black mb-4 sm:text-5xl text-white">Scale your workflow</h2>
+            <p className="text-slate-400 max-w-2xl mx-auto text-lg">
+              Brivo presents a flexible pricing structure, meticulously crafted to not only adapt but also scale effectively, 
+              aligning perfectly with the ever-evolving demands and dynamic requirements of your team.
+            </p>
+          </div>
+
+          <div className="grid gap-8 lg:grid-cols-3">
+            <PricingCard 
+              title="Basic Plan"
+              price="0"
+              description="Tailored specifically for small teams and individual users, streamlining basic project management tasks and brand organization."
+              features={[
+                "Up to 3 Brands",
+                "Basic Kanban Board",
+                "Core Reporting",
+                "Standard Priority Support"
+              ]}
+            />
+            <PricingCard 
+              title="Pro Plan"
+              price="49"
+              description="Engineered for growing agencies and dynamic creative teams, unlocking advanced collaboration tools and deep analytics."
+              popular
+              features={[
+                "Unlimited Brands",
+                "Advanced Collaboration",
+                "Actionable Perf Insights",
+                "Increased Storage Capacity"
+              ]}
+            />
+            <PricingCard 
+              title="Enterprise Plan"
+              price="Custom"
+              description="Tailored exclusively for large, multifaceted organizations with bespoke integration and dedicated support requirements."
+              features={[
+                "Bespoke Integrations",
+                "Dedicated Account Manager",
+                "Granular Access Control",
+                "Highest Security Standards"
+              ]}
+            />
+          </div>
+          <p className="mt-12 text-slate-500 text-sm italic">
+            All plans are specifically engineered to furnish an optimal balance of essential features and readily available resources.
+          </p>
+        </div>
+      </section>
+
       {/* CTA Footer */}
       <footer className="py-20 border-t border-white/5">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center text-slate-500 text-sm">
@@ -161,6 +310,52 @@ function FeatureCard({ icon: Icon, title, description }: { icon: any, title: str
       </div>
       <h3 className="text-xl font-bold mb-3 text-white">{title}</h3>
       <p className="text-slate-400 text-sm leading-relaxed">{description}</p>
+    </div>
+  );
+}
+
+function PricingCard({ title, price, description, features, popular }: any) {
+  return (
+    <div className={cn(
+      "p-8 rounded-3xl border transition-all relative flex flex-col group",
+      popular 
+        ? "bg-primary border-primary shadow-2xl shadow-primary/20 scale-105 z-10" 
+        : "bg-white/5 border-white/10 hover:border-primary/50"
+    )}>
+      {popular && (
+        <span className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-white text-primary rounded-full text-[10px] font-black uppercase tracking-widest shadow-xl">
+          Most Popular
+        </span>
+      )}
+      <div className="mb-8">
+        <h3 className={cn("text-xl font-black mb-2", popular ? "text-white" : "text-white")}>{title}</h3>
+        <p className={cn("text-sm leading-relaxed", popular ? "text-white/80" : "text-slate-400")}>{description}</p>
+      </div>
+      <div className="mb-8 flex items-baseline gap-1">
+        <span className={cn("text-4xl font-black", popular ? "text-white" : "text-white")}>
+          {price === 'Custom' ? '' : '$'}{price}
+        </span>
+        {price !== 'Custom' && (
+          <span className={cn("text-sm font-bold opacity-60", popular ? "text-white" : "text-white")}>/mo</span>
+        )}
+      </div>
+      <ul className="space-y-4 mb-8 flex-1">
+        {features.map((f: string, i: number) => (
+          <li key={i} className="flex items-center gap-3 text-sm">
+            <CheckCircle2 className={cn("h-4 w-4 shrink-0", popular ? "text-white" : "text-primary")} />
+            <span className={popular ? "text-white/90" : "text-slate-300"}>{f}</span>
+          </li>
+        ))}
+      </ul>
+      <Button 
+        variant={popular ? "secondary" : "outline"} 
+        className={cn(
+          "w-full h-12 rounded-xl font-bold",
+          popular ? "bg-white text-primary border-none hover:bg-white/90" : "border-white/10"
+        )}
+      >
+        Choose {title}
+      </Button>
     </div>
   );
 }

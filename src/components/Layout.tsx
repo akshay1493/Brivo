@@ -16,6 +16,7 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { useAuthStore } from '../store/store';
+import { Logo } from './Logo';
 import { useNotifications, useGlobalSearch, useMarkNotificationRead } from '../hooks/useApi';
 import { Button, Card, Badge } from './ui';
 import { cn } from '../lib/utils';
@@ -27,7 +28,7 @@ export function Sidebar({ isOpen, onClose }: { isOpen?: boolean, onClose?: () =>
   const location = useLocation();
 
   const menuItems = [
-    { icon: LayoutDashboard, label: 'Dashboard', path: '/' },
+    { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
     { icon: Briefcase, label: 'Projects', path: '/projects' },
     { icon: CheckSquare, label: 'Tasks', path: '/tasks' },
     { icon: Tag, label: 'Brands', path: '/brands' },
@@ -54,12 +55,9 @@ export function Sidebar({ isOpen, onClose }: { isOpen?: boolean, onClose?: () =>
         <div className="flex items-center justify-between mb-8 px-2 lg:mb-12">
           <div 
             className="flex items-center gap-3 cursor-pointer group"
-            onClick={() => { navigate('/home'); onClose?.(); }}
+            onClick={() => { navigate('/'); onClose?.(); }}
           >
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white font-bold text-xl shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform">
-              B
-            </div>
-            <span className="text-xl font-bold tracking-tight text-slate-900">Brivo</span>
+            <Logo size={20} />
           </div>
           {/* Close button for mobile */}
           <Button variant="ghost" size="icon" className="lg:hidden" onClick={onClose}>
@@ -131,7 +129,7 @@ export function Navbar({ onMenuClick }: { onMenuClick: () => void }) {
   const markAsRead = useMarkNotificationRead();
 
   const unreadCount = notifications?.filter(n => !n.read).length || 0;
-  const pageName = location.pathname === '/' ? 'Dashboard' : location.pathname.split('/')[1];
+  const pageName = location.pathname === '/dashboard' ? 'Dashboard' : location.pathname.split('/')[1];
 
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-white/20 bg-white/20 px-4 backdrop-blur-md lg:px-8">

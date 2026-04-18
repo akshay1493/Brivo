@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/store';
+import { Logo } from '../components/Logo';
 import { Button, Card } from '../components/ui';
 import { Mail, Lock, Loader2 } from 'lucide-react';
 
@@ -13,8 +14,14 @@ export default function Login() {
   
   const [seedSuccess, setSeedSuccess] = useState('');
   
-  const login = useAuthStore(state => state.login);
+  const { login, token } = useAuthStore();
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    if (token) {
+      navigate('/dashboard');
+    }
+  }, [token, navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,7 +39,7 @@ export default function Login() {
       };
       login(mockUser, 'mock-jwt-token');
       setLoading(false);
-      navigate('/');
+      navigate('/dashboard');
     }, 1000);
   };
 
@@ -50,11 +57,8 @@ export default function Login() {
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <div className="mb-8 flex flex-col items-center gap-2 text-center">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-white font-bold text-3xl shadow-lg shadow-primary/20">
-            B
-          </div>
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900">Brivo</h1>
+        <div className="mb-8 flex flex-col items-center gap-4 text-center">
+          <Logo size={40} />
           <p className="text-slate-500">Manage brands, tasks, and productivity.</p>
         </div>
 
