@@ -54,7 +54,8 @@ export function Sidebar({ isOpen, onClose }: { isOpen?: boolean, onClose?: () =>
       )}>
         <div className="flex items-center justify-between mb-8 px-2 lg:mb-12">
           <div 
-            className="flex items-center gap-3 cursor-pointer group"
+            id="sidebar-logo-container"
+            className="flex items-center gap-3 cursor-pointer group transition-all duration-300 hover:bg-slate-900/5 hover:scale-105 active:scale-95 px-2 py-1.5 rounded-xl border border-transparent hover:border-slate-200"
             onClick={() => { navigate('/'); onClose?.(); }}
           >
             <Logo size={20} />

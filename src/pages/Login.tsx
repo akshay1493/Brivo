@@ -10,9 +10,6 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [seeding, setSeeding] = useState(false);
-  
-  const [seedSuccess, setSeedSuccess] = useState('');
   
   const { login, token } = useAuthStore();
   const navigate = useNavigate();
@@ -27,9 +24,8 @@ export default function Login() {
     e.preventDefault();
     setLoading(true);
     setError('');
-    setSeedSuccess('');
     
-    // Simulating mock login for the standalone version
+    // Simulating mock login for the frontend-only version
     setTimeout(() => {
       const mockUser = {
         id: 'u1',
@@ -43,23 +39,16 @@ export default function Login() {
     }, 1000);
   };
 
-  const handleSeed = async () => {
-    setSeeding(true);
-    setError('');
-    setSeedSuccess('');
-    
-    setTimeout(() => {
-      setSeedSuccess('Demo data successfully loaded into memory!');
-      setSeeding(false);
-    }, 1200);
-  };
-
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <div className="mb-8 flex flex-col items-center gap-4 text-center">
-          <Logo size={40} />
-          <p className="text-slate-500">Manage brands, tasks, and productivity.</p>
+        <div 
+          id="login-logo-container"
+          className="mb-8 flex flex-col items-center gap-4 text-center cursor-pointer group transition-all duration-300 hover:scale-105 active:scale-95"
+          onClick={() => navigate('/')}
+        >
+          <Logo size={40} className="group-hover:drop-shadow-xl transition-all" />
+          <p className="text-slate-500 group-hover:text-slate-900 transition-colors">Manage brands, tasks, and productivity.</p>
         </div>
 
         <Card className="p-8 backdrop-blur-2xl">
@@ -95,17 +84,13 @@ export default function Login() {
             </div>
 
             {error && <p className="text-sm font-medium text-red-500">{error}</p>}
-            {seedSuccess && <p className="text-sm font-medium text-green-500">{seedSuccess}</p>}
 
             <Button type="submit" className="w-full h-11 shadow-lg shadow-primary/20 font-bold" loading={loading}>
               Sign In
             </Button>
           </form>
 
-          <div className="mt-6 flex flex-col gap-3">
-             <Button variant="ghost" className="w-full text-xs h-9 bg-white/20 border border-white/20" onClick={handleSeed} loading={seeding}>
-               Seed Demo Data
-             </Button>
+          <div className="mt-6">
              <p className="text-center text-xs text-slate-500">
                Don't have an account? Contact your administrator.
              </p>

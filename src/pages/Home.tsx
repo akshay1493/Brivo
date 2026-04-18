@@ -19,19 +19,9 @@ import { motion } from 'motion/react';
 import { cn } from '../lib/utils';
 
 import { Logo } from '../components/Logo';
-import { useAuthStore } from '../store/store';
 
 export default function Home() {
   const navigate = useNavigate();
-  const { token } = useAuthStore();
-
-  const handleCTA = () => {
-    if (token) {
-      navigate('/dashboard');
-    } else {
-      navigate('/login');
-    }
-  };
 
   return (
     <div className="min-h-screen bg-[#020617] text-white selection:bg-primary/30">
@@ -45,11 +35,11 @@ export default function Home() {
             <a href="#about" className="hover:text-white transition-colors">About</a>
           </div>
           <div className="flex items-center gap-4">
-            <Button variant="ghost" className="text-slate-400 hover:text-white" onClick={handleCTA}>
-              {token ? 'Go to Dashboard' : 'Log in'}
+            <Button className="h-10 px-6 font-bold" onClick={() => navigate('/login')}>
+              Log in
             </Button>
-            <Button onClick={handleCTA} className="hidden sm:flex">
-              {token ? 'Open Brivo' : 'Start Free Trial'}
+            <Button variant="ghost" onClick={() => navigate('/login')} className="hidden sm:flex text-slate-400 hover:text-white">
+              Get Started
             </Button>
           </div>
         </div>
@@ -80,8 +70,8 @@ export default function Home() {
               Built for performance, designed for clarity.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button size="lg" className="h-14 px-8 text-lg font-bold group" onClick={handleCTA}>
-                {token ? 'Enter Workspace' : 'Get Started Now'}
+              <Button size="lg" className="h-14 px-8 text-lg font-bold group" onClick={() => navigate('/login')}>
+                Login to Enter Workspace
                 <ChevronRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
             </div>

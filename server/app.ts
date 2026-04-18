@@ -29,8 +29,8 @@ export async function createApp() {
   // Seed Data (Development only) - Move ABOVE the DB middleware
   apiRouter.post('/seed', async (req, res) => {
     try {
-      console.log('Seed request received (Mock Mode)...');
-      // await connectDB(); 
+      console.log('Seed request received. Connecting to DB...');
+      await connectDB(); 
     } catch (err: any) {
       const isMissingUri = err.message?.includes('MONGO_URI');
       return res.status(isMissingUri ? 503 : 500).json({ 
@@ -64,9 +64,20 @@ export async function createApp() {
     }
   });
 
-  // Mock DB middleware - No database connection needed for standalone demo
+  // Ensure DB is connected for API routes
   apiRouter.use(async (req, res, next) => {
-    next();
+    try {
+      if (req.path !== '/health') {
+        await connectDB();
+      }
+      next();
+    } catch (err: any) {
+      // If DB fails, we still allow next() if it's a non-destructive path? 
+      // No, for these routes we need DB.
+      res.status(503).json({ 
+        message: err.message || 'Database connection currently unavailable.' 
+      });
+    }
   });
 
   // --- API ROUTES ---
