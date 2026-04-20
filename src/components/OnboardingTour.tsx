@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Button, Card } from './ui';
 import { X, ChevronRight, LayoutDashboard, Briefcase, CheckSquare, Tag, Users } from 'lucide-react';
 
@@ -39,14 +40,27 @@ const steps = [
 export function OnboardingTour() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const forceTour = searchParams.get('tour') === 'true';
     const hasSeenOnboarding = localStorage.getItem('onboarding_complete');
-    if (!hasSeenOnboarding) {
+    
+    if (forceTour) {
+      setCurrentStep(0);
+      setIsVisible(true);
+      // Remove the tour param from URL without refreshing
+      const params = new URLSearchParams(location.search);
+      params.delete('tour');
+      const newPath = location.pathname + (params.toString() ? `?${params.toString()}` : '');
+      navigate(newPath, { replace: true });
+    } else if (!hasSeenOnboarding) {
       const timer = setTimeout(() => setIsVisible(true), 1500);
       return () => clearTimeout(timer);
     }
-  }, []);
+  }, [location.search, location.pathname, navigate]);
 
   const handleNext = () => {
     if (currentStep < steps.length - 1) {
@@ -67,7 +81,7 @@ export function OnboardingTour() {
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+      <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-white/40 backdrop-blur-md">
         <motion.div
           initial={{ opacity: 0, scale: 0.9, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}

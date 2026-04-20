@@ -49,7 +49,7 @@ export function Sidebar({ isOpen, onClose }: { isOpen?: boolean, onClose?: () =>
       )}
 
       <aside className={cn(
-        "fixed left-0 top-0 z-50 h-screen w-64 border-r border-white/20 bg-white/40 p-4 backdrop-blur-2xl transition-all duration-300 lg:translate-x-0 lg:block",
+        "fixed left-0 top-0 z-50 h-screen w-64 border-r border-slate-200 bg-white p-4 transition-all duration-300 lg:translate-x-0 lg:block",
         isOpen ? "translate-x-0" : "-translate-x-full"
       )}>
         <div className="flex items-center justify-between mb-8 px-2 lg:mb-12">
@@ -76,7 +76,7 @@ export function Sidebar({ isOpen, onClose }: { isOpen?: boolean, onClose?: () =>
                 to={item.path}
                 onClick={onClose}
                 className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all hover:bg-white/50",
+                  "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all hover:bg-slate-50",
                   isActive ? "bg-primary text-white shadow-md shadow-primary/20" : "text-slate-500"
                 )}
               >
@@ -88,7 +88,7 @@ export function Sidebar({ isOpen, onClose }: { isOpen?: boolean, onClose?: () =>
         </nav>
 
       <div className="absolute bottom-4 left-4 right-4">
-        <div className="glass rounded-xl p-3 bg-white/30">
+        <div className="rounded-xl p-3 bg-slate-50 border border-slate-100">
           <div className="flex items-center gap-3 mb-3">
             <div className="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center text-xs font-bold text-primary">
               {user?.name?.[0]}
@@ -133,7 +133,7 @@ export function Navbar({ onMenuClick }: { onMenuClick: () => void }) {
   const pageName = location.pathname === '/dashboard' ? 'Dashboard' : location.pathname.split('/')[1];
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-white/20 bg-white/20 px-4 backdrop-blur-md lg:px-8">
+    <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-slate-200 bg-white/80 px-4 backdrop-blur-md lg:px-8">
       <div className="flex items-center gap-4">
         <Button variant="ghost" size="icon" className="lg:hidden" onClick={onMenuClick}>
           <Menu className="h-5 w-5" />

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../store/store';
 import { Logo } from '../components/Logo';
 import { Button, Card } from '../components/ui';
@@ -13,12 +13,16 @@ export default function Login() {
   
   const { login, token } = useAuthStore();
   const navigate = useNavigate();
+  const location = useLocation();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (token) {
-      navigate('/dashboard');
+      const searchParams = new URLSearchParams(location.search);
+      const tour = searchParams.get('tour');
+      const dashboardPath = tour ? `/dashboard?tour=${tour}` : '/dashboard';
+      navigate(dashboardPath, { replace: true });
     }
-  }, [token, navigate]);
+  }, [token, navigate, location.search]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,7 +39,11 @@ export default function Login() {
       };
       login(mockUser, 'mock-jwt-token');
       setLoading(false);
-      navigate('/dashboard');
+      
+      const searchParams = new URLSearchParams(location.search);
+      const tour = searchParams.get('tour');
+      const dashboardPath = tour ? `/dashboard?tour=${tour}` : '/dashboard';
+      navigate(dashboardPath);
     }, 1000);
   };
 

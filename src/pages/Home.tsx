@@ -19,9 +19,20 @@ import { motion } from 'motion/react';
 import { cn } from '../lib/utils';
 
 import { Logo } from '../components/Logo';
+import { useAuthStore } from '../store/store';
 
 export default function Home() {
   const navigate = useNavigate();
+  const { token } = useAuthStore();
+
+  const handleGetStarted = () => {
+    const tourParam = '?tour=true';
+    if (token) {
+      navigate(`/dashboard${tourParam}`);
+    } else {
+      navigate(`/login${tourParam}`);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#020617] text-white selection:bg-primary/30">
@@ -38,7 +49,7 @@ export default function Home() {
             <Button className="h-10 px-6 font-bold" onClick={() => navigate('/login')}>
               Log in
             </Button>
-            <Button variant="ghost" onClick={() => navigate('/login')} className="hidden sm:flex text-slate-400 hover:text-white">
+            <Button variant="ghost" onClick={handleGetStarted} className="hidden sm:flex text-slate-400 hover:text-white">
               Get Started
             </Button>
           </div>
@@ -70,8 +81,8 @@ export default function Home() {
               Built for performance, designed for clarity.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button size="lg" className="h-14 px-8 text-lg font-bold group" onClick={() => navigate('/login')}>
-                Login to Enter Workspace
+              <Button size="lg" className="h-14 px-8 text-lg font-bold group" onClick={handleGetStarted}>
+                {token ? 'Enter Workspace' : 'Get Started Now'}
                 <ChevronRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
             </div>

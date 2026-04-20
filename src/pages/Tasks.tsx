@@ -95,7 +95,7 @@ export default function Tasks() {
       </div>
 
       {view === 'list' ? (
-        <Card className="overflow-hidden border-slate-200/60 shadow-xl shadow-slate-200/20">
+        <Card className="overflow-hidden p-0">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead className="border-b border-slate-100 bg-slate-50/50 text-slate-500">
@@ -184,7 +184,7 @@ export default function Tasks() {
                       ref={provided.innerRef}
                       className={cn(
                         "space-y-4 min-h-[400px] rounded-2xl transition-all duration-300 p-2",
-                        snapshot.isDraggingOver ? "bg-slate-100/80 ring-2 ring-primary/20 ring-inset" : "bg-slate-50/50"
+                        snapshot.isDraggingOver ? "bg-slate-100" : "bg-slate-50"
                       )}
                     >
                       {tasks?.filter((t: any) => t.status === status).map((task: any, index: number) => (
@@ -199,7 +199,7 @@ export default function Tasks() {
                                 onClick={() => openDetails(task)}
                                 className={cn(
                                   "p-5 border-l-4 transition-all relative group/card cursor-pointer",
-                                  snapshot.isDragging ? "shadow-2xl scale-105 rotate-2 z-50 border-primary ring-4 ring-primary/10" : "hover:shadow-lg hover:-translate-y-1"
+                                  snapshot.isDragging ? "shadow-2xl scale-105 rotate-2 z-50 border-primary ring-4 ring-primary/10" : ""
                                 )}
                                 style={{ borderLeftColor: task.brandId?.color }}
                               >
