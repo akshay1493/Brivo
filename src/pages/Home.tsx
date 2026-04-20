@@ -23,7 +23,7 @@ import { useAuthStore } from '../store/store';
 
 export default function Home() {
   const navigate = useNavigate();
-  const { token } = useAuthStore();
+  const { token, logout, user } = useAuthStore();
 
   const handleGetStarted = () => {
     const tourParam = '?tour=true';
@@ -32,6 +32,13 @@ export default function Home() {
     } else {
       navigate(`/login${tourParam}`);
     }
+  };
+
+  const handleHeroLogin = () => {
+    if (token) {
+      logout();
+    }
+    navigate('/login?tour=true');
   };
 
   return (
@@ -46,12 +53,25 @@ export default function Home() {
             <a href="#about" className="hover:text-white transition-colors">About</a>
           </div>
           <div className="flex items-center gap-4">
-            <Button className="h-10 px-6 font-bold" onClick={() => navigate('/login')}>
-              Log in
-            </Button>
-            <Button variant="ghost" onClick={handleGetStarted} className="hidden sm:flex text-slate-400 hover:text-white">
-              Get Started
-            </Button>
+            {token ? (
+              <>
+                <Button variant="ghost" className="h-10 px-6 font-bold text-slate-400 hover:text-white" onClick={() => navigate('/dashboard')}>
+                  Dashboard
+                </Button>
+                <Button className="h-10 px-6 font-bold" onClick={() => { logout(); navigate('/'); }}>
+                  Log out
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button className="h-10 px-6 font-bold" onClick={() => navigate('/login')}>
+                  Log in
+                </Button>
+                <Button variant="ghost" onClick={handleGetStarted} className="hidden sm:flex text-slate-400 hover:text-white">
+                  Get Started
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </nav>
@@ -81,8 +101,8 @@ export default function Home() {
               Built for performance, designed for clarity.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button size="lg" className="h-14 px-8 text-lg font-bold group" onClick={handleGetStarted}>
-                {token ? 'Enter Workspace' : 'Get Started Now'}
+              <Button size="lg" className="h-14 px-8 text-lg font-bold group" onClick={handleHeroLogin}>
+                Login to Workspace
                 <ChevronRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
             </div>

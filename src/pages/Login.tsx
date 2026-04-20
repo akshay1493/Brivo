@@ -16,12 +16,9 @@ export default function Login() {
   const location = useLocation();
 
   useEffect(() => {
-    if (token) {
-      const searchParams = new URLSearchParams(location.search);
-      const tour = searchParams.get('tour');
-      const dashboardPath = tour ? `/dashboard?tour=${tour}` : '/dashboard';
-      navigate(dashboardPath, { replace: true });
-    }
+    // We removed the auto-redirect on mount to ensure the login screen remains accessible 
+    // when explicitly requested (e.g., from the home page CTA).
+    // Authentication guards elsewhere in the app (App.tsx) handle session protection.
   }, [token, navigate, location.search]);
 
   const handleLogin = async (e: React.FormEvent) => {
